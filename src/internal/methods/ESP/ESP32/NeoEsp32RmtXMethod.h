@@ -33,6 +33,8 @@ License along with NeoPixel.  If not, see
 
 extern void AddLog(uint32_t loglevel, PGM_P formatP, ...);
 
+#define TAG "npb"
+
 extern "C"
 {
 #include <rom/gpio.h>
@@ -129,6 +131,9 @@ public:
 
         if (ESP_OK == ESP_ERROR_CHECK_WITHOUT_ABORT(rmt_tx_wait_all_done(_channel, 10000 / portTICK_PERIOD_MS)))
         {
+            //SHLOMO: ensure minimum delay between frames. This is the wrong way
+            vTaskDelay(1 / portTICK_PERIOD_MS);
+
             // AddLog(2,"__ %u", _sizeData);
             // now start the RMT transmit with the editing buffer before we swap
             // esp_err_t ret = 
